@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHangfire(x => x.UseSqlServerStorage(@"Data Source=JIMMY-8;Initial Catalog=hangfire-webAPI-db;Integrated Security=True;Pooling=False"));
 builder.Services.AddHangfireServer();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

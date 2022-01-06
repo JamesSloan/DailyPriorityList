@@ -18,7 +18,7 @@ namespace hangfire_webAPI.Controllers
         [Route("[action]")]
         public IActionResult Welcome()
         {
-            var jobId = BackgroundJob.Enqueue(() => SendWelcomeEmail("Welcome to our app"));
+            var jobId = BackgroundJob.Enqueue(() => SendMessage("Welcome to our app"));
 
             return Ok($"Job ID: {jobId}, Welcome email sent to the user");
         }
@@ -29,7 +29,7 @@ namespace hangfire_webAPI.Controllers
         public IActionResult Discount()
         {
             var delay = 120;
-            var jobId = BackgroundJob.Schedule(() => SendWelcomeEmail("Welcome to our app"), TimeSpan.FromSeconds(delay));
+            var jobId = BackgroundJob.Schedule(() => SendMessage("Welcome to our app"), TimeSpan.FromSeconds(delay));
 
             return Ok($"Job ID: {jobId}, Discount email will be sent in {delay} seconds to the user");
         }
