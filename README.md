@@ -1,4 +1,4 @@
-# webAPI
+# DailyPriorityList
 Project to explore webAPI implementations. A Daily Priority List will be the end goal.
 
 To do:
