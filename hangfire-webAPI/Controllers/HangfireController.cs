@@ -7,6 +7,9 @@ namespace hangfire_webAPI.Controllers
     [Route("api/[controller]/[action]")]
     public class HangfireController : ControllerBase
     {
+        private static readonly HttpClient client = new HttpClient();
+        private readonly string applicationUrl = "https://localhost:7179/api";
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -52,6 +55,33 @@ namespace hangfire_webAPI.Controllers
             BackgroundJob.ContinueJobWith(jobId, () => SendMessage("Confirming that you have been unsubscribed"));
 
             return Ok("Confirmation job created");
+        }
+
+        [HttpGet("{username}")]
+        public async Task<IActionResult> Login(string username)
+        {
+            BackgroundJob.Enqueue(() => SendMessage($"Welcome to our app {username}"));
+
+            var response = await getValues(username);
+            var values = response;
+            return Ok($"{username} logged in, with values {values}");
+        }
+
+        private async Task<string> getValues(string username)
+        {
+            var requestUrl = $"{applicationUrl}/Values/{username}";
+            Console.WriteLine(requestUrl);
+            try
+            {
+                var valuesResponse = await client.GetAsync(requestUrl);
+                valuesResponse.EnsureSuccessStatusCode();
+                var values = valuesResponse.Content.ReadAsStringAsync().Result;
+                return values;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public void SendMessage(string text)
