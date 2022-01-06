@@ -45,7 +45,20 @@ namespace hangfire_webAPI.Controllers
             return Ok("Database update job initiated");
         }
 
-        public void SendWelcomeEmail(string text)
+        //Continuous job example - triggered when another job complete
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult ConfirmUnsubscribe()
+        {
+            var delay = 30;
+            var jobId = BackgroundJob.Schedule(() => SendMessage("You asked to be unsubscribed"), TimeSpan.FromSeconds(delay));
+
+            BackgroundJob.ContinueJobWith(jobId, () => SendMessage("Confirming that you have been unsubscribed"));
+
+            return Ok("Confirmation job created");
+        }
+
+        public void SendMessage(string text)
         {
             Console.WriteLine(text);
         }
