@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace hangfire_webAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class HangfireController : ControllerBase
     {
         [HttpGet]
@@ -15,7 +15,6 @@ namespace hangfire_webAPI.Controllers
 
         //Fire and Forget job example
         [HttpPost]
-        [Route("[action]")]
         public IActionResult Welcome()
         {
             var jobId = BackgroundJob.Enqueue(() => SendMessage("Welcome to our app"));
@@ -25,7 +24,6 @@ namespace hangfire_webAPI.Controllers
 
         //Delayed job example
         [HttpPost]
-        [Route("[action]")]
         public IActionResult Discount()
         {
             var delay = 120;
@@ -36,7 +34,6 @@ namespace hangfire_webAPI.Controllers
 
         //Repeated job example
         [HttpPost]
-        [Route("[action]")]
         public IActionResult DatabaseUpdate()
         {
             var frequency = 1;
@@ -47,7 +44,6 @@ namespace hangfire_webAPI.Controllers
 
         //Continuous job example - triggered when another job complete
         [HttpPost]
-        [Route("[action]")]
         public IActionResult ConfirmUnsubscribe()
         {
             var delay = 30;
